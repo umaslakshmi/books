@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Book and Reviews | Books</title>
+	</head>
+	<body>
+		<a href="/books/home">Home</a>
+		<a href="/users/logout">Logout</a>
+		<h1>{{book['title']}}</h1>
+		<p>Author: {{book['author']}}</p>
+		<h2>Reviews:</h2>
+		{% for review in reviews %}
+			<hr>
+			<p>Rating: {{review['rating']}}</p>
+			<p><a href="/users/{{review['user_id']}}">{{review['alias']}}</a> says: {{review['review']}}</p>
+			<p>Posted on {{review['created_at']}}</p>
+			{% if review['user_id'] == session['id'] %}
+				<a href="/books/destroy/{{review['review_id']}}">Delete this review</a>
+			{% endif %}
+		{% endfor %}
+		<h2>Add a Review:</h2>
+		<form method='post' action='/books/createreview/{{book["id"]}}'>
+			<input type='text' name='review'>
+			<label>Rating:</label>
+			<input type='number' name='rating' min='1' max='5'> stars
+			<input type='submit' value='Submit Review'>
+		</form>
+	</body>
+</html>
